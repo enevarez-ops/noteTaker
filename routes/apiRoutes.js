@@ -26,4 +26,24 @@ router.post("/notes", (req, res) => {
     })
 })
 
+router.delete("/notes/:id", (req, res) => {
+    let id = parseInt(req.params.id)
+    console.log(id);
+    let endNotes = [];
+    
+    fs.readFile("db/db.json", (err, data) => {
+        if (err) console.log(err)
+        var existingNotes = JSON.parse(data) || [];
+        endNotes = existingNotes.filter(note => note.id !== id);
+       fs.writeFile("db/db.json", JSON.stringify(endNotes), (err) => {
+         if (err) console.log(err);
+       });
+       res.send(endNotes);
+    })
+
+
+
+
+}) 
+
 module.exports = router;
